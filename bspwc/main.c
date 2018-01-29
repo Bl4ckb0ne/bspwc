@@ -88,7 +88,7 @@ int main(int argc, char *argv[])
 			    exit(EXIT_SUCCESS);
                 break;
             case 'c':
-                config_file = malloc(strlen(optarg));
+                config_file = malloc(strlen(optarg) + 1);
                 strcpy(config_file, optarg);
                 break;
             case 's':
@@ -141,7 +141,7 @@ int main(int argc, char *argv[])
     // Setup BSPWM related stuff
     if (server.socket_name == NULL)
     {
-        server.socket_name = malloc(strlen(BSPWC_DEFAULT_SOCKET));
+        server.socket_name = malloc(strlen(BSPWC_DEFAULT_SOCKET) + 1);
         strcpy(server.socket_name, BSPWC_DEFAULT_SOCKET);
     }
 
