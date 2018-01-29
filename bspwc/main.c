@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
                 strcpy(config_file, optarg);
                 break;
             case 's':
-                server.socket_name = malloc(strlen(optarg));
+                server.socket_name = malloc(strlen(optarg) + 1);
                 strcpy(server.socket_name, optarg);
                 break;
             case 'v':
@@ -178,7 +178,7 @@ int main(int argc, char *argv[])
             wlr_log(L_ERROR, "Failed to get HOME environment variable");
         }
         
-        config_file = malloc(strlen(home_dir) + strlen(BSPWC_DEFAUT_CONFIG_FILE));
+        config_file = malloc(strlen(home_dir) + strlen(BSPWC_DEFAUT_CONFIG_FILE) + 1);
         config_file[0] = '\0';
 
         strcat(config_file, home_dir);
