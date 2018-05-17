@@ -88,4 +88,10 @@ void new_output_notify(struct wl_listener* listener, void* data)
 	wlr_output_layout_add_auto(output->server->output_layout, output->wlr_output);
 
 	wlr_output_create_global(wlr_output);
+
+	output->desktop = create_desktop(output);
+	if (output->desktop == NULL)
+	{
+		wlr_log(L_ERROR, "Failed to create default desktop for %s", wlr_output->name);
+	}
 }

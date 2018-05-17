@@ -12,11 +12,14 @@
 #include <wlr/types/wlr_matrix.h>
 #include <wlr/types/wlr_output.h>
 
+#include "bspwc/desktop.h"
 #include "bspwc/server.h"
 
 struct output
 {
     struct server* server;
+	struct desktop* desktop;
+
     struct wlr_output* wlr_output;
     struct timespec last_frame;
 

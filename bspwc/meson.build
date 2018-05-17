@@ -2,6 +2,7 @@ bspwc_src = files(
     'backend.c',
     'config.c',
 	'cursor.c',
+	'desktop.c',
     'input.c',
     'main.c',
     'output.c',
