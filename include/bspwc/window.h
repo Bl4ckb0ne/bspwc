@@ -3,41 +3,44 @@
 
 #include <wlr/types/wlr_xdg_shell_v6.h>
 
+#include "bspwc/desktop.h"
 #include "bspwc/xdg_surface_v6.h"
 
 enum window_type
 {
-    WL_SHELL,
-    XDG_SHELL,
-    XDG_SHELL_V6,
-    XWAYLAND,
+	WL_SHELL,
+	XDG_SHELL,
+	XDG_SHELL_V6,
+	XWAYLAND,
 };
 
 struct window
 {
-    double x, y;
-    uint32_t width, height;
-    float alpha;
+	double x, y;
+	uint32_t width, height;
+	float alpha;
 
-    enum window_type type;
-    union
-    {
-        struct wlr_xdg_surface_v6* wlr_xdg_surface_v6;
-    };
+	struct desktop* desktop;
 
-    union
-    {
-        struct xdg_surface_v6* xdg_surface_v6;
-    };
+	enum window_type type;
+	union
+	{
+		struct wlr_xdg_surface_v6* wlr_xdg_surface_v6;
+	};
 
-    struct wlr_surface* wlr_surface;
+	union
+	{
+		struct xdg_surface_v6* xdg_surface_v6;
+	};
 
-    struct wl_listener new_subsurface;
+	struct wlr_surface* wlr_surface;
 
-    struct wl_signal event_unmap;
-    struct wl_signal event_destroy;
+	struct wl_listener new_subsurface;
+
+	struct wl_signal event_unmap;
+	struct wl_signal event_destroy;
 };
 
-struct window* create_window();
+struct window* create_window(struct desktop* desktop);
 
 #endif // WINDOW_H

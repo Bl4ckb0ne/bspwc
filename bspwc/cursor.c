@@ -17,7 +17,20 @@ void handle_cursor_motion_absolute(struct wl_listener* listener, void* data)
 }
 
 void handle_cursor_button(struct wl_listener* listener, void* data)
-{}
+{
+	struct cursor* cursor = wl_container_of(listener, cursor, button);
+	struct wlr_event_pointer_button* event = data;
+
+	if (event->state == WLR_BUTTON_PRESSED)
+	{
+		// Give focus to window under the cursor;
+	}
+	else if (event->state == WLR_BUTTON_RELEASED)
+	{
+		// Resize ?
+	}
+
+}
 
 void handle_cursor_axis(struct wl_listener* listener, void* data)
 {}
