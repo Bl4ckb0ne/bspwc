@@ -34,7 +34,7 @@ void handle_xdg_shell_v6_surface(struct wl_listener* listener, void* data)
 
     if (wlr_xdg_surface_v6->role == WLR_XDG_SURFACE_V6_ROLE_POPUP)
     {
-        wlr_log(L_DEBUG, "New xdg_v6 popup");
+        wlr_log(L_INFO, "New xdg_v6 popup");
         return;
     }
 
@@ -43,7 +43,7 @@ void handle_xdg_shell_v6_surface(struct wl_listener* listener, void* data)
 	struct input* input = server->input;
 
     wlr_log(
-			L_DEBUG,
+			L_INFO,
 			"New xdg_v6 toplevel: title=%s, app_id=%s",
 			wlr_xdg_surface_v6->toplevel->title,
 			wlr_xdg_surface_v6->toplevel->app_id
