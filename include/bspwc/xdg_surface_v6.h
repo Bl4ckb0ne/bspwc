@@ -6,6 +6,7 @@
 #include <wlr/types/wlr_xdg_shell_v6.h>
 #include <wlr/util/log.h>
 
+#include "bspwc/input.h"
 #include "bspwc/server.h"
 #include "bspwc/window.h"
 

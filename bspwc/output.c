@@ -95,3 +95,8 @@ void new_output_notify(struct wl_listener* listener, void* data)
 		wlr_log(L_ERROR, "Failed to create default desktop for %s", wlr_output->name);
 	}
 }
+
+bool insert_window(struct output* output, struct window* window)
+{
+	return false;
+}

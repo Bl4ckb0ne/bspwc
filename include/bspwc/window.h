@@ -3,6 +3,7 @@
 
 #include <wlr/types/wlr_xdg_shell_v6.h>
 
+#include "bspwc/desktop.h"
 #include "bspwc/xdg_surface_v6.h"
 
 enum window_type
@@ -15,9 +16,12 @@ enum window_type
 
 struct window
 {
+	char* title;
     double x, y;
     uint32_t width, height;
     float alpha;
+
+	struct desktop* desktop;
 
     enum window_type type;
     union

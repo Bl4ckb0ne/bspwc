@@ -14,6 +14,7 @@
 
 #include "bspwc/desktop.h"
 #include "bspwc/server.h"
+#include "bspwc/window.h"
 
 struct output
 {
@@ -32,5 +33,7 @@ struct output
 void output_destroy_notify(struct wl_listener* listener, void* data);
 void output_frame_notify(struct wl_listener* listener, void* data);
 void new_output_notify(struct wl_listener* listener, void* data);
+
+bool insert_window(struct output* output, struct window* window);
 
 #endif // OUTPUT_H
