@@ -104,7 +104,7 @@ void handle_xdg_shell_v6_surface(struct wl_listener* listener, void* data)
 
 	// Insert it into the right output
 	struct backend* backend = wl_container_of(listener, backend, new_xdg_shell_v6);
-	if (insert_window(backend, window) == false)
+	if (insert_window_to_backend(backend, window) == false)
 	{
 		wlr_log(L_ERROR, "Failed to insert window into desktop");
 	}

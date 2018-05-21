@@ -29,3 +29,8 @@ void destroy_desktop(struct desktop* desktop)
 
 	free(desktop);
 }
+
+bool insert_window_to_desktop(struct desktop* desktop, struct window* window)
+{
+	return false;
+}

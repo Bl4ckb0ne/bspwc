@@ -4,6 +4,7 @@
 #include <wayland-server.h>
 
 #include "bspwc/output.h"
+#include "bspwc/window.h"
 
 #define DEFAULT_DESKTOP_NAME "desktop"
 
@@ -21,5 +22,7 @@ struct desktop
 
 struct desktop* create_desktop(struct output* output);
 void destroy_desktop(struct desktop* desktop);
+
+bool insert_window_to_desktop(struct desktop* desktop, struct window* window);
 
 #endif // DESKTOP_H
