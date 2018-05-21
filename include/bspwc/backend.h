@@ -17,6 +17,7 @@
 
 #include "bspwc/output.h"
 #include "bspwc/server.h"
+#include "bspwc/window.h"
 
 struct backend
 {
@@ -44,5 +45,6 @@ struct backend* create_backend(struct server* server);
 void destroy_backend(struct backend* backend);
 
 void render_surface(struct wlr_output* wlr_output, struct wlr_surface* surface, const int x, const int y);
+bool insert_window(struct backend* backend, struct window* window);
 
 #endif // BACKEND_H

@@ -58,12 +58,12 @@ void render_surface(struct wlr_output* wlr_output, struct wlr_surface* surface, 
 
     struct wlr_renderer* renderer = wlr_backend_get_renderer(wlr_output->backend);
 
-    struct wlr_box render_box = {
-        .x = x,
-        .y = y,
-        .width = surface->current->width,
-        .height = surface->current->height
-    };
+	struct wlr_box render_box = {
+			.x = x,
+			.y = y,
+			.width = surface->current->width,
+			.height = surface->current->height
+		};
 
     float matrix[16];
     wlr_matrix_project_box(
@@ -85,5 +85,41 @@ void render_surface(struct wlr_output* wlr_output, struct wlr_surface* surface, 
 
         render_surface(wlr_output, subsurface->surface, x + sx, y + sy);
     }
+}
 
+bool insert_window(struct backend* backend, struct window* window)
+{
+	struct server* server = backend->server;
+	struct input* input = server->input;
+
+	// Insert on active desktop
+	struct wlr_output* wlr_output = wlr_output_layout_output_at(
+			server->output_layout,
+			input->cursor->wlr_cursor->x,
+			input->cursor->wlr_cursor->y
+		);
+
+	if (wlr_output == NULL)
+	{
+		wlr_log(L_ERROR, "Inserting window %s in an empty layout", window->title);
+		return false;
+	}
+
+	// Find the right output
+	struct output* output = NULL;
+	wl_list_for_each(output, &backend->outputs, link)
+	{
+		if (output->wlr_output == wlr_output)
+		{
+			break;
+		}
+	}
+
+	if (output == NULL)
+	{
+		wlr_log(L_ERROR, "Failed to found output to insert window %s", window->title);
+		return false;
+	}
+
+	return false;
 }
