@@ -64,6 +64,13 @@ bool init_server(struct server* server)
 		return false;
 	}
 
+	return true;
+}
+
+bool config_server(struct server* server)
+{
+	wlr_log(L_INFO, "Configuring bspwm server");
+
 	// Create communication socket for bspc
 	if (server->socket_name == NULL)
 	{

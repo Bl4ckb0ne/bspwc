@@ -112,13 +112,21 @@ int main(int argc, char *argv[])
         wlr_log_init(L_ERROR, NULL);
     }
 
-    if (!init_server(&server))
+    if (init_server(&server) == false)
     {
-        wlr_log(L_ERROR, "Failed to init server");
+        wlr_log(L_ERROR, "Failed to initialize bspwc server");
         exit(EXIT_FAILURE);
     }
 
+	// Assign global display
 	display = server.display;
+
+	if (config_server(&server) == false)
+	{
+		wlr_log(L_ERROR, "Failed to configure bspwc server");
+        terminate_server(&server);
+		exit(EXIT_FAILURE);
+	}
 
     // Start BSPWC
     if (!start_server(&server))
