@@ -123,6 +123,9 @@ bool config_server(struct server* server)
 		return false;
 	}
 
+	// Init default behaviors
+	server->insert_mode = RIGHT;
+
 	return true;
 }
 
