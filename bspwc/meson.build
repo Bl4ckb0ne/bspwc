@@ -7,6 +7,7 @@ bspwc_src = files(
     'main.c',
     'output.c',
     'server.c',
+	'tree.c',
     'window.c',
     'xdg_surface_v6.c',
 )
