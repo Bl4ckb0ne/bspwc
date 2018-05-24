@@ -87,7 +87,7 @@ void render_surface(struct wlr_output* wlr_output, struct wlr_surface* surface, 
     }
 }
 
-bool backend_insert_window(struct backend* backend, struct window* window)
+bool insert_window_to_backend(struct backend* backend, struct window* window)
 {
 	struct server* server = backend->server;
 	struct input* input = server->input;
@@ -121,5 +121,5 @@ bool backend_insert_window(struct backend* backend, struct window* window)
 		return false;
 	}
 
-	return desktop_insert_window(output->desktop, window);
+	return insert_window_to_desktop(output->desktop, window);
 }

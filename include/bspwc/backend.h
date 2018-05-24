@@ -19,6 +19,9 @@
 #include "bspwc/server.h"
 #include "bspwc/window.h"
 
+// Forward declaration for backend
+struct window;
+
 struct backend
 {
     struct server* server;
@@ -45,6 +48,6 @@ struct backend* create_backend(struct server* server);
 void destroy_backend(struct backend* backend);
 
 void render_surface(struct wlr_output* wlr_output, struct wlr_surface* surface, const int x, const int y);
-bool backend_insert_window(struct backend* backend, struct window* window);
+bool insert_window_to_backend(struct backend* backend, struct window* window);
 
 #endif // BACKEND_H

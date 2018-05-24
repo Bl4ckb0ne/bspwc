@@ -23,6 +23,6 @@ struct desktop
 struct desktop* create_desktop(struct output* output);
 void destroy_desktop(struct desktop* desktop);
 
-bool desktop_insert_window(struct desktop* desktop, struct window* window);
+bool insert_window_to_desktop(struct desktop* desktop, struct window* window);
 
 #endif // DESKTOP_H
