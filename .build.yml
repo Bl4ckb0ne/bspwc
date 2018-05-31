@@ -1,0 +1,24 @@
+image: archlinux
+packages:
+  - meson
+  - wayland
+  - wayland-protocols
+  - xorg-server-xwayland
+  - xcb-util-image
+  - libinput
+  - libxkbcommon
+sources:
+  - https://github.com/Bl4ckb0ne/bspwc
+  - https://github.com/swaywm/wlroots
+tasks:
+  - wlroots: |
+      cd wlroots
+      meson --prefix=/usr build
+      ninja -C build
+      sudo ninja -C build install
+  - setup: |
+      cd bspwc
+      meson build
+  - build: |
+      cd bspwc
+      ninja -C build
