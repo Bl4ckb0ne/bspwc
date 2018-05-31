@@ -13,7 +13,7 @@ struct backend* create_backend(struct server* server)
 
     backend->server = server;
 
-    backend->wlr_backend = wlr_backend_autocreate(server->display);
+    backend->wlr_backend = wlr_backend_autocreate(server->display, NULL);
     assert(backend->wlr_backend);
 
 	backend->wlr_compositor = wlr_compositor_create(
