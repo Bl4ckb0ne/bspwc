@@ -1,27 +1,27 @@
 bspwc_src = files(
-    'backend.c',
-    'config.c',
+	'backend.c',
+	'config.c',
 	'cursor.c',
 	'desktop.c',
-    'input.c',
-    'main.c',
-    'output.c',
-    'server.c',
+	'input.c',
+	'main.c',
+	'output.c',
+	'server.c',
 	'tree.c',
-    'window.c',
-    'xdg_surface_v6.c',
+	'window.c',
+	'xdg_surface_v6.c',
 )
 
 bspwc_deps = [
-    wayland_server,
-    wlroots,
-    pixman,
+	wayland_server,
+	wlroots,
+	pixman,
 ]
 
 executable(
-    'bspwc',
-    bspwc_src,
-    include_directories: [inc_folder],
-    dependencies: [bspwc_deps, wlr_protos],
-    install: true
+	'bspwc',
+	bspwc_src,
+	include_directories: [inc_folder],
+	dependencies: [bspwc_deps, wlr_protos],
+	install: true
 )

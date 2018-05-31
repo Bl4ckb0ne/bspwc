@@ -8,38 +8,38 @@
 
 enum window_type
 {
-    WL_SHELL,
-    XDG_SHELL,
-    XDG_SHELL_V6,
-    XWAYLAND,
+	WL_SHELL,
+	XDG_SHELL,
+	XDG_SHELL_V6,
+	XWAYLAND,
 };
 
 struct window
 {
 	char* title;
-    double x, y;
-    uint32_t width, height;
-    float alpha;
+	double x, y;
+	uint32_t width, height;
+	float alpha;
 
 	struct desktop* desktop;
 
-    enum window_type type;
-    union
-    {
-        struct wlr_xdg_surface_v6* wlr_xdg_surface_v6;
-    };
+	enum window_type type;
+	union
+	{
+		struct wlr_xdg_surface_v6* wlr_xdg_surface_v6;
+	};
 
-    union
-    {
-        struct xdg_surface_v6* xdg_surface_v6;
-    };
+	union
+	{
+		struct xdg_surface_v6* xdg_surface_v6;
+	};
 
-    struct wlr_surface* wlr_surface;
+	struct wlr_surface* wlr_surface;
 
-    struct wl_listener new_subsurface;
+	struct wl_listener new_subsurface;
 
-    struct wl_signal event_unmap;
-    struct wl_signal event_destroy;
+	struct wl_signal event_unmap;
+	struct wl_signal event_destroy;
 };
 
 struct window* create_window();

@@ -18,16 +18,16 @@
 
 struct output
 {
-    struct server* server;
+	struct server* server;
 	struct desktop* desktop;
 
-    struct wlr_output* wlr_output;
-    struct timespec last_frame;
+	struct wlr_output* wlr_output;
+	struct timespec last_frame;
 
-    struct wl_listener destroy;
-    struct wl_listener frame;
+	struct wl_listener destroy;
+	struct wl_listener frame;
 
-    struct wl_list link; // server::outputs
+	struct wl_list link; // server::outputs
 };
 
 void output_destroy_notify(struct wl_listener* listener, void* data);
