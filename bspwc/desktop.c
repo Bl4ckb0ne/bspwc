@@ -19,7 +19,7 @@ struct desktop* create_desktop(struct output* output)
 	desktop->next = NULL;
 	desktop->previous = NULL;
 
-	wl_list_init(&desktop->windows);
+	desktop->root = node_create();
 
 	return desktop;
 }
@@ -32,5 +32,10 @@ void destroy_desktop(struct desktop* desktop)
 
 bool insert_window_to_desktop(struct desktop* desktop, struct window* window)
 {
-	return false;
+	struct node* child = node_create();
+	child->window = window;
+
+	// wew that long
+	// TODO: find a good way to get the insert mode
+	return insert(desktop->output->server->insert_mode, desktop->root, child);
 }

@@ -31,41 +31,73 @@ void node_destroy(struct node* node)
 	free(node);
 }
 
-void insert(enum insert_mode mode, struct node* root, struct node* child)
+bool insert(enum insert_mode mode, struct node* root, struct node* child)
 {
-	// TODO : verbose node insertion
+	wlr_log(L_DEBUG, "Inserting %p", (void*)child);
 
-	if (root->parent == NULL)
+	struct node* candidate = root;
+
+	while (true)
 	{
-		if ((root->left == NULL) && (root->right == NULL))
+		wlr_log(L_DEBUG, "Candidate %p", (void*)candidate);
+		// Real root case
+		if (candidate->parent == NULL)
 		{
-			struct node* new_child = node_create();
-			new_child->parent = root;
-			new_child->window = root->window;
-			root->window = NULL;
-
-			if (mode == RIGHT)
+			if ((candidate->left == NULL) && (candidate->right == NULL))
 			{
-				root->left = new_child;
-				root->right = child;
-			}
-			else if (mode == LEFT)
-			{
-				root->left = child;
-				root->right = new_child;
+				wlr_log(L_DEBUG, "Insert at root");
+				break;
 			}
 		}
-		else if ((mode == RIGHT) && (root->right != NULL))
+
+		if (mode == RIGHT)
 		{
-			insert(mode, root->right, child);
+			if (candidate->right != NULL)
+			{
+				candidate = candidate->right;
+				continue;
+			}
+			else
+			{
+				break;
+			}
 		}
-		else if ((mode == LEFT) && (root->right != NULL))
+		else if ((mode == LEFT) && (candidate->left != NULL))
 		{
-			insert(mode, root->left, child);
+			if (candidate->left != NULL)
+			{
+				candidate = candidate->left;
+				continue;
+			}
+			else
+			{
+				break;
+			}
 		}
+
+		wlr_log(L_ERROR, "Error founding insertion candidate");
+		return false;
+
 	}
-	else
+
+	struct node* new_child = node_create();
+	new_child->window = root->window;
+	new_child->parent = root;
+	child->parent = root;
+	root->window = NULL;
+
+	if (mode == RIGHT)
 	{
-		wlr_log(L_ERROR, "TODO");
+		wlr_log(L_DEBUG, "Inserting into right of %p", (void*)root);
+		root->left = new_child;
+		root->right = child;
 	}
+	else if (mode == LEFT)
+	{
+		wlr_log(L_DEBUG, "Inserting into left of %p", (void*)root);
+		root->left = child;
+		root->right = new_child;
+	}
+
+	return true;
 }

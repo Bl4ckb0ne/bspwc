@@ -4,6 +4,7 @@
 #include <wayland-server.h>
 
 #include "bspwc/output.h"
+#include "bspwc/tree.h"
 #include "bspwc/window.h"
 
 #define DEFAULT_DESKTOP_NAME "desktop"
@@ -17,7 +18,7 @@ struct desktop
 	struct desktop* next;
 	struct desktop* previous;
 
-	struct wl_list windows; // window::link
+	struct node* root;
 };
 
 struct desktop* create_desktop(struct output* output);
