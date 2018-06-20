@@ -74,7 +74,8 @@ void render_surface(struct wlr_output* wlr_output, struct wlr_surface* surface, 
 			wlr_output->transform_matrix
 		);
 
-	wlr_render_texture_with_matrix(renderer, surface->texture, matrix, 1.0f);
+  struct wlr_texture *texture = wlr_surface_get_texture(surface);
+	wlr_render_texture_with_matrix(renderer, texture, matrix, 1.0f);
 
 	struct wlr_subsurface* subsurface;
 	wl_list_for_each(subsurface, &surface->subsurfaces, parent_link)
