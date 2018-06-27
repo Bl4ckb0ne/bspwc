@@ -1,6 +1,6 @@
 # Contributing to bspwc
 
-Contributing only involves opening a pull request or an issues. You'll be more
+Contributing only involves opening a pull request or an issue. You'll be more
 successful with your work if you join us on the [IRC
 channel](http://webchat.freenode.net/?channels=bspwc&uio=d4) to discuss your
 plan.
