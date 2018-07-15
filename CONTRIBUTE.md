@@ -5,23 +5,12 @@ successful with your work if you join us on the [IRC
 channel](http://webchat.freenode.net/?channels=bspwc&uio=d4) to discuss your
 plan.
 
-## Release Cycle
+## Development cycle
 
 The master branch is a stable point in time. It will always compile on any
-given computer, but it's labeled as unstable.
+given system, but it's labeled as unstable.
 
-**Development**
-
-During this time, branches from pull requests are being merged into the master
-branch. All pull requests should be built by the CI successfuly.
-
-**Release candidate**
-
-TBD
-
-**Stable release**
-
-TBD
+All pull requests should be built by the CI successfuly before being merged.
 
 ## Pull Requests
 
@@ -44,11 +33,8 @@ branch. Instead, when you start working on a feature, do this:
 
 ## Commit Messages
 
-Please strive to write good commit messages. Here's some guidelines to follow:
-
-The first line should be limited to 50 characters and should be a sentence that
-completes the thought [When applied, this commit will...] "Implement cmd_move"
-or "Fix #742" or "Improve performance of arrange_windows on ARM" or similar.
+Be short and concise. The first line of a commit messages shouldn't exceed 50
+characters and should be a complete sentance.
 
 The subsequent lines should be seperated from the subject line by a single
 blank line, and include optional details. In this you can give justification
@@ -67,170 +53,105 @@ message as well.
 
 ## Coding Style
 
-bspwc is written in C. The style guidelines is [kernel
-style](https://www.kernel.org/doc/Documentation/process/coding-style.rst).
-Some points to note:
+bspwc is written in C and follows a style similar to the [kernel
+style](https://www.kernel.org/doc/Documentation/process/coding-style.rst),
+with a few differences.
 
-* Do not use typedefs unless you have a good reason
-* Do not use macros unless you have a *really* good reason
-* Tabs, not spaces
-* `char* pointer` - note position of `*`
-* Use logging with reckless abandon
-* Braces goes on a new line
-* Always include braces for if/for/while/etc, even for one-liners
+Keep your code conforming to C11 and POSIX, and do not use GNU extensions.
 
-An example of well formatted code:
+### Brackets
 
-```C
-#include <stdio.h>
-#include <stdlib.h>
-#include "log.h"
-#include "example.h"
+Brackets always goes on the next line, also including single statements for `if`
+, `while` and `for`.
 
-struct foobar
+```c
+struct something
 {
-	char* foo;
-	int bar;
-	long baz;
-}; // Do not typedef without a good reason
+	char* name;
+	struct stuff* stuff;
+};
 
-int main(int argc, const char** argv)
+void process_something(const something* something)
 {
-	if (argc != 4)
+	if (condition1)
 	{
-		bspwc_abort("Do not run this program manually. See man 5 sway and look for output options.");
+		do_thing_1();
 	}
-
-	int desired_output = atoi(argv[1]);
-	wlr_log(L_INFO, "Using output %d of %d", desired_output, registry->outputs->length);
-	int i;
-	struct output_state* output = registry->outputs->items[desired_output];
-	struct window* window = window_setup(registry, 100, 100, false);
-	if (!window)
+	else
 	{
-		bspwc_abort("Failed to create surfaces.");
+		do_thing_2();
 	}
-	window->width = output->width;
-	window->height = output->height;
-	desktop_shell_set_background(registry->desktop_shell, output->output, window->surface);
-	list_add(surfaces, window);
-
-	cairo_surface_t* image = cairo_image_surface_create_from_png(argv[2]);
-	double width = cairo_image_surface_get_width(image);
-	double height = cairo_image_surface_get_height(image);
-
-	const char* scaling_mode_str = argv[3];
-	enum scaling_mode scaling_mode;
-	if (strcmp(scaling_mode_str, "stretch") == 0)
-	{
-		scaling_mode = SCALING_MODE_STRETCH;
-	} else if (strcmp(scaling_mode_str, "fill") == 0)
-	{
-		scaling_mode = SCALING_MODE_FILL;
-	} else if (strcmp(scaling_mode_str, "fit") == 0)
-	{
-		scaling_mode = SCALING_MODE_FIT;
-	} else if (strcmp(scaling_mode_str, "center") == 0)
-	{
-		scaling_mode = SCALING_MODE_CENTER;
-	} else if (strcmp(scaling_mode_str, "tile") == 0)
-	{
-		scaling_mode = SCALING_MODE_TILE;
-	} else
-	{
-		bspwc_abort("Unsupported scaling mode: %s", scaling_mode_str);
-	}
-
-	for (i = 0; i < surfaces->length; ++i)
-	{
-		struct window* window = surfaces->items[i];
-		if (window_prerender(window) && window->cairo)
-		{
-			switch (scaling_mode)
-			{
-				case SCALING_MODE_STRETCH:
-					cairo_scale(window->cairo,
-							(double) window->width / width,
-							(double) window->height / height);
-					cairo_set_source_surface(window->cairo, image, 0, 0);
-					break;
-				case SCALING_MODE_FILL:
-				{
-					double window_ratio = (double) window->width / window->height;
-					double bg_ratio = width / height;
-
-					if (window_ratio > bg_ratio)
-					{
-						double scale = (double) window->width / width;
-						cairo_scale(window->cairo, scale, scale);
-						cairo_set_source_surface(window->cairo, image,
-								0,
-								(double) window->height/2 / scale - height/2);
-					} else
-					{
-						double scale = (double) window->height / height;
-						cairo_scale(window->cairo, scale, scale);
-						cairo_set_source_surface(window->cairo, image,
-								(double) window->width/2 / scale - width/2,
-								0);
-					}
-					break;
-				}
-				case SCALING_MODE_FIT:
-				{
-					double window_ratio = (double) window->width / window->height;
-					double bg_ratio = width / height;
-
-					if (window_ratio > bg_ratio)
-					{
-						double scale = (double) window->height / height;
-						cairo_scale(window->cairo, scale, scale);
-						cairo_set_source_surface(window->cairo, image,
-								(double) window->width/2 / scale - width/2,
-								0);
-					} else
-					{
-						double scale = (double) window->width / width;
-						cairo_scale(window->cairo, scale, scale);
-						cairo_set_source_surface(window->cairo, image,
-								0,
-								(double) window->height/2 / scale - height/2);
-					}
-					break;
-				}
-				case SCALING_MODE_CENTER:
-					cairo_set_source_surface(window->cairo, image,
-							(double) window->width/2 - width/2,
-							(double) window->height/2 - height/2);
-					break;
-				case SCALING_MODE_TILE:
-				{
-					cairo_pattern_t* pattern = cairo_pattern_create_for_surface(image);
-					cairo_pattern_set_extend(pattern, CAIRO_EXTEND_REPEAT);
-					cairo_set_source(window->cairo, pattern);
-					break;
-				}
-				default:
-					bspwc_abort("Scaling mode '%s' not implemented yet!", scaling_mode_str);
-			}
-
-			cairo_paint(window->cairo);
-
-			window_render(window);
-		}
-	}
-
-	while (wl_display_dispatch(registry->display) != -1);
-
-	for (i = 0; i < surfaces->length; ++i)
-	{
-		struct window* window = surfaces->items[i];
-		window_teardown(window);
-	}
-	list_free(surfaces);
-	registry_teardown(registry);
-
-	return 0;
 }
 ```
+
+### Indentation
+
+Indentation is a single tab. Long lines are broken at 80 characters, and
+continued beneath with an extra tab. If the line being broken is opening a new
+block (functions, if, while, etc.), the continuation line should be indented
+with two tabs, so they can't be misread as being part of the block.
+
+```c
+void function(void)
+{
+	if (condition1 && contition2 &&
+			condition 3 && condition4)
+	{
+		really_really_long_function(argument1, argument2,
+			argument3, argument4);
+	}
+}
+```
+
+### Naming
+
+bspwc is written in [snake_case](https://en.wikipedia.org/wiki/Snake_case).
+
+### Pointers
+
+The `*` goes next to the type. If you must declare two pointers on the same
+line, don't. Do it on two lines and initialize them both to `NULL`. If a pointer
+is not allocated or copied on the same line it has been declared, then it must
+be initialized to `NULL`.
+
+```c
+char* name = NULL;
+char* other_name = NULL;
+
+name = get_name();
+```
+
+### Construction and destruction functions
+
+Those function are responsible for allocating and freeing an object. They should
+be written as a pair.
+
+Syntax is `create_X` and `destroy_X` where `X` is the name of a `struct`.
+
+`create` will allocate the memory for the object, and initialize all its fields.
+The function **can return** `NULL` if something went wrong.
+`destroy` will free and/or deinitialize all the fields of the object, and free
+the object itself.
+
+### Initialize and terminate function
+
+Those function are responsible for initializing and terminating an object. They
+should be written as a pair.
+
+Syntax is `initialize_X` and `terminate_X` where `X` is the name of a `struct`.
+
+`initialize` and `terminate` accept a pointer to a given object, and will
+initialize or terminate its fields. They are **not** responsible for allocating
+or freeing any memory. They are returning a `bool` for the status of the action.
+
+### Error codes
+
+Functions that are not returning a value, nor a pointer should retourn a `bool`
+(stdbool.h) if the operation succeeded or not.
+
+### Misc
+
+* Do not use typedefs unless you have a good reason
+* Do not use macros unless you have a good reason
+* Use `wlr_log` with reckless abandon
 
