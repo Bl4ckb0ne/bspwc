@@ -146,22 +146,22 @@ int main(int argc, char *argv[])
 			wlr_log(WLR_ERROR, "Failed to get HOME environment variable");
 		}
 
-		config_file = malloc(strlen(home_dir) + strlen(BSPWC_DEFAUT_CONFIG_FILE) + 1);
+		config_file = malloc(
+			strlen(home_dir) + strlen(BSPWC_DEFAULT_CONFIG_FILE) + 1
+		);
 		config_file[0] = '\0';
 
 		strcat(config_file, home_dir);
-		strcat(config_file, BSPWC_DEFAUT_CONFIG_FILE);
+		strcat(config_file, BSPWC_DEFAULT_CONFIG_FILE);
 	}
 
-/*
-	TODO: load up config file
 	if (!load_config_file(config_file))
 	{
 		wlr_log(WLR_ERROR, "Failed to load config file");
-		terminate_server(&bspwc);
+		terminate_server(&server);
 		exit(EXIT_FAILURE);
 	}
-*/
+
 	signal(SIGINT, sig_handler);
 
 	wl_display_run(server.display);
