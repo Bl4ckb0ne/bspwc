@@ -11,8 +11,13 @@ project(
 	'buildtype=debug',
   ],
 )
-
-add_project_arguments('-Wno-unused-parameter', '-Wextra', language: 'c')
+ 
+add_project_arguments(
+  '-Wno-unused-parameter',
+  '-Wextra',
+  '-DWLR_USE_UNSTABLE',
+  language: 'c'
+)
 
 if (get_option('buildtype') == 'release')
   add_project_arguments('-D_FORTIFY_SOURCE=2', language: 'c')
