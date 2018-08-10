@@ -7,8 +7,6 @@
 
 #include "bspwc/config.h"
 
-extern char **environ;
-
 // config file is executed.
 bool load_config_file(const char* file)
 {
@@ -16,7 +14,7 @@ bool load_config_file(const char* file)
 	int status;
 	if (fork() == 0)
 	{
-		execle(file, file, NULL, environ);
+		execl(file, file, NULL);
 		exit(EXIT_FAILURE);
 	}
 	// Wait for the subprocess to finish and get the status, which contains
