@@ -23,10 +23,9 @@ bool load_config_file(const char* file)
 	// the exit status of the subprocess. You can access it using the
 	// WIFEXITED and WEXITSTATUS macros.
 	wait(&status);
-	if (WIFEXITED(status))
+	if (WIFEXITED(status) && WEXITSTATUS(status) == EXIT_SUCCESS)
 	{
-		if (WEXITSTATUS(status) == EXIT_SUCCESS)
-			return true;
+		return true;
 	}
 	return false;
 }
