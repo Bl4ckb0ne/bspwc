@@ -19,6 +19,9 @@ bool load_config_file(const char* file)
 		execle(file, file, NULL, environ);
 		exit(EXIT_FAILURE);
 	}
+	// Wait for the subprocess to finish and get the status, which contains
+	// the exit status of the subprocess. You can access it using the
+	// WIFEXITED and WEXITSTATUS macros.
 	wait(&status);
 	if (WIFEXITED(status))
 	{
