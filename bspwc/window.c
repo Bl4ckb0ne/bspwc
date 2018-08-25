@@ -29,6 +29,8 @@ struct window* create_window()
 
 void resize_window(struct window *window, int width, int height)
 {
+	wlr_log(WLR_INFO, "Resizing window %s to %d, %d", window->title, width,
+			height);
 	window->width = width;
 	window->height = height;
 }
