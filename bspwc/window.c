@@ -3,7 +3,7 @@
 struct window* create_window()
 {
 	wlr_log(WLR_DEBUG, "Creating new window");
-	struct window* window = malloc(sizeof(struct window));
+	struct window *window = malloc(sizeof(struct window));
 	if (window == NULL)
 	{
 		wlr_log(WLR_ERROR, "Failed to create new window");
@@ -25,4 +25,10 @@ struct window* create_window()
 	wl_signal_init(&window->event_destroy);
 
 	return window;
+}
+
+void resize_window(struct window *window, int width, int height)
+{
+	window->width = width;
+	window->height = height;
 }

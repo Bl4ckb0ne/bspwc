@@ -22,17 +22,17 @@ struct window
 	uint32_t width, height;
 	float alpha;
 
-	struct desktop* desktop;
+	struct desktop *desktop;
 
 	enum window_type type;
 	union
 	{
-		struct wlr_xdg_surface_v6* wlr_xdg_surface_v6;
+		struct wlr_xdg_surface_v6 *wlr_xdg_surface_v6;
 	};
 
 	union
 	{
-		struct xdg_surface_v6* xdg_surface_v6;
+		struct xdg_surface_v6 *xdg_surface_v6;
 	};
 
 	struct wlr_surface* wlr_surface;
@@ -44,5 +44,7 @@ struct window
 };
 
 struct window* create_window();
+
+void resize_window(struct window *window, int width, int height);
 
 #endif // WINDOW_H
