@@ -8,6 +8,7 @@
 
 enum window_type
 {
+	NONE,
 	WL_SHELL,
 	XDG_SHELL,
 	XDG_SHELL_V6,

@@ -2,14 +2,24 @@
 
 struct window* create_window()
 {
-	struct window* window = calloc(1, sizeof(struct window));
+	wlr_log(WLR_DEBUG, "Creating new window");
+	struct window* window = malloc(sizeof(struct window));
 	if (window == NULL)
 	{
+		wlr_log(WLR_ERROR, "Failed to create new window");
 		return NULL;
 	}
 
-	window->desktop = NULL;
+	window->title = NULL;
+	window->x = 0;
+	window->y = 0;
+	window->width = 0;
+	window->height = 0;
 	window->alpha = 1.0f;
+
+	window->desktop = NULL;
+
+	window->type = NONE;
 
 	wl_signal_init(&window->event_unmap);
 	wl_signal_init(&window->event_destroy);
