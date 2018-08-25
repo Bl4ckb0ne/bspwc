@@ -7,6 +7,23 @@
 
 #include "bspwc/config.h"
 
+struct config *create_config()
+{
+	wlr_log(WLR_DEBUG, "Creating config");
+
+	struct config *config = malloc(sizeof(struct config));
+
+	config->mode = MANUAL;
+	config->polarity = LEFT;
+
+	return config;
+}
+
+void destroy_config(struct config *config)
+{
+	free(config);
+}
+
 // config file is executed.
 bool load_config_file(const char* file)
 {
@@ -17,6 +34,7 @@ bool load_config_file(const char* file)
 		execl(file, file, NULL);
 		exit(EXIT_FAILURE);
 	}
+
 	// Wait for the subprocess to finish and get the status, which contains
 	// the exit status of the subprocess. You can access it using the
 	// WIFEXITED and WEXITSTATUS macros.
@@ -25,5 +43,6 @@ bool load_config_file(const char* file)
 	{
 		return true;
 	}
+
 	return false;
 }

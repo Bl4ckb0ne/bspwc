@@ -3,13 +3,35 @@
 
 #include <stdbool.h>
 
-// Might not be the best place for this
-enum insert_mode
+enum insertion_mode
 {
-	LEFT,
-	RIGHT,
+	AUTOMATIC,
+	MANUAL
 };
 
-bool load_config_file(const char* file);
+enum insertion_polarity
+{
+	LEFT,
+	RIGHT
+};
+
+enum insertion_direction
+{
+	NORTH,
+	EAST,
+	SOUTH,
+	WEST
+};
+
+struct config
+{
+	enum insertion_mode mode;
+	enum insertion_polarity polarity;
+};
+
+struct config *create_config();
+void destroy_config(struct config *config);
+
+bool load_config_file(const char *file);
 
 #endif // CONFIG_H
