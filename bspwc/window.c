@@ -6,7 +6,6 @@ struct window* create_window()
 	struct window *window = malloc(sizeof(struct window));
 	if (window == NULL)
 	{
-		wlr_log(WLR_ERROR, "Failed to create new window");
 		return NULL;
 	}
 
