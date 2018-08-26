@@ -4,6 +4,7 @@
 #include <stdbool.h>
 
 #include "bspwc/config.h"
+#include "bspwc/server.h"
 #include "bspwc/window.h"
 
 struct node
@@ -18,8 +19,7 @@ struct node
 struct node *create_node();
 void destroy_node(struct node *node);
 
-bool insert_node(const struct config *config, struct node* root,
+bool insert_node(const struct server *server, struct node* root,
 		struct node* child);
-bool is_leaf(struct node* node);
 
 #endif // TREE_H
