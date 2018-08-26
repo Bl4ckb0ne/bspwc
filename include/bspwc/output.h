@@ -18,10 +18,10 @@
 
 struct output
 {
-	struct server* server;
-	struct desktop* desktop;
+	struct server *server;
+	struct desktop *desktop;
 
-	struct wlr_output* wlr_output;
+	struct wlr_output *wlr_output;
 	struct timespec last_frame;
 
 	struct wl_listener destroy;
