@@ -35,10 +35,31 @@ void destroy_window(struct window *window)
 	free(window);
 }
 
+void position_window(struct window *window, int x, int y)
+{
+	if (window == NULL)
+	{
+		wlr_log(WLR_ERROR, "Cannot resize null window");
+		return;
+	}
+
+	wlr_log(WLR_INFO, "Window %s new position to %d, %d", window->title, x, y);
+
+	window->x = x;
+	window->y = y;
+}
+
 void resize_window(struct window *window, int width, int height)
 {
-	wlr_log(WLR_INFO, "Resizing window %s to %d, %d", window->title, width,
+	if (window == NULL)
+	{
+		wlr_log(WLR_ERROR, "Cannot resize null window");
+		return;
+	}
+
+	wlr_log(WLR_INFO, "Window %s resize to %d, %d", window->title, width,
 			height);
+
 	window->width = width;
 	window->height = height;
 }

@@ -46,6 +46,7 @@ struct window
 struct window *create_window();
 void destroy_window(struct window *window);
 
+void position_window(struct window *window, int x, int y);
 void resize_window(struct window *window, int width, int height);
 
 #endif // WINDOW_H
