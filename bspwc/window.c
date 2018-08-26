@@ -26,6 +26,15 @@ struct window* create_window()
 	return window;
 }
 
+void destroy_window(struct window *window)
+{
+	wlr_log(WLR_DEBUG, "Destroying window");
+
+	// TODO: Destroy signals
+
+	free(window);
+}
+
 void resize_window(struct window *window, int width, int height)
 {
 	wlr_log(WLR_INFO, "Resizing window %s to %d, %d", window->title, width,

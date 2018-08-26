@@ -17,7 +17,7 @@ enum window_type
 
 struct window
 {
-	char* title;
+	char *title;
 	double x, y;
 	uint32_t width, height;
 	float alpha;
@@ -35,7 +35,7 @@ struct window
 		struct xdg_surface_v6 *xdg_surface_v6;
 	};
 
-	struct wlr_surface* wlr_surface;
+	struct wlr_surface *wlr_surface;
 
 	struct wl_listener new_subsurface;
 
@@ -43,7 +43,8 @@ struct window
 	struct wl_signal event_destroy;
 };
 
-struct window* create_window();
+struct window *create_window();
+void destroy_window(struct window *window);
 
 void resize_window(struct window *window, int width, int height);
 
