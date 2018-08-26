@@ -108,7 +108,13 @@ void handle_xdg_shell_v6_surface(struct wl_listener *listener, void *data)
 		return;
 	}
 
-	if (insert_window(backend, window) == false)
+	struct node *child = create_node();
+	child->window = window;
+
+	const struct server *server = backend->server;
+	const struct output *output = get_current_output(server);
+
+	if (insert_node(server, output->desktop->root, child) == false)
 	{
 		wlr_log(WLR_ERROR, "Failed to insert window into desktop");
 	}
