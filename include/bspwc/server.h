@@ -26,7 +26,7 @@ struct server
 {
 	char* socket_name;
 	int socket;
-	enum insert_mode insert_mode;
+	struct config *config;
 
 	struct backend* backend;
 	struct input* input;
@@ -42,5 +42,7 @@ bool init_server(struct server* server);
 bool config_server(struct server* server);
 bool start_server(struct server* server);
 bool terminate_server(struct server* server);
+
+const struct output *get_current_output(const struct server *server);
 
 #endif // SERVER_H

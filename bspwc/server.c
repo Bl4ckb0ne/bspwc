@@ -64,6 +64,7 @@ bool init_server(struct server* server)
 		return false;
 	}
 
+
 	return true;
 }
 
@@ -124,7 +125,7 @@ bool config_server(struct server* server)
 	}
 
 	// Init default behaviors
-	server->insert_mode = RIGHT;
+	server->config = create_config();
 
 	return true;
 }
@@ -157,6 +158,8 @@ bool terminate_server(struct server* server)
 {
 	wlr_log(WLR_INFO, "Terminating bspwc");
 
+	destroy_config(server->config);
+
 	wlr_output_layout_destroy(server->output_layout);
 	destroy_input(server->input);
 	destroy_backend(server->backend);
@@ -165,4 +168,33 @@ bool terminate_server(struct server* server)
 	wl_display_destroy(server->display);
 
 	return true;
+}
+
+const struct output *get_current_output(const struct server *server)
+{
+	wlr_log(WLR_DEBUG, "Getting the current output");
+
+	const struct input *input = server->input;
+	// Get desktop under the cursor
+	struct wlr_output* wlr_output = wlr_output_layout_output_at(
+			server->output_layout, input->cursor->wlr_cursor->x,
+			input->cursor->wlr_cursor->y);
+
+	if (wlr_output == NULL)
+	{
+		wlr_log(WLR_ERROR, "Failed to get active wlr_output");
+		return false;
+	}
+
+	// Find the right output
+	struct output* output = NULL;
+	wl_list_for_each(output, &server->backend->outputs, link)
+	{
+		if (output->wlr_output == wlr_output)
+		{
+			return output;
+		}
+	}
+
+	return NULL;
 }
