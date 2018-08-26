@@ -1,9 +1,9 @@
 #include "bspwc/tree.h"
 
-struct node* node_create()
+struct node *create_node()
 {
 	wlr_log(WLR_DEBUG, "Creating node");
-	struct node* node = calloc(1, sizeof(struct node));
+	struct node *node = malloc(sizeof(struct node));
 
 	node->window = NULL;
 
@@ -14,7 +14,7 @@ struct node* node_create()
 	return node;
 }
 
-void node_destroy(struct node* node)
+void destroy_node(struct node *node)
 {
 	wlr_log(WLR_DEBUG, "Destroying node");
 	if (node->left != NULL)
@@ -27,11 +27,13 @@ void node_destroy(struct node* node)
 		node_destroy(node->right);
 	}
 
-	free(node->window);
+	destroy_window(node->window);
+
 	free(node);
 }
 
-bool insert(enum insert_mode mode, struct node* root, struct node* child)
+bool insert_node(const struct config *config, struct node* root,
+		struct node* child)
 {
 	if (root == NULL || child == NULL)
 	{

@@ -15,10 +15,11 @@ struct node
 	struct node *right;
 };
 
-struct node *node_create();
-void node_destroy(struct node *node);
+struct node *create_node();
+void destroy_node(struct node *node);
 
-bool insert(enum insert_mode mode, struct node* root, struct node* child);
+bool insert_node(const struct config *config, struct node* root,
+		struct node* child);
 bool is_leaf(struct node* node);
 
 #endif // TREE_H
