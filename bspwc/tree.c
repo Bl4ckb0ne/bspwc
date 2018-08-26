@@ -19,12 +19,12 @@ void destroy_node(struct node *node)
 	wlr_log(WLR_DEBUG, "Destroying node");
 	if (node->left != NULL)
 	{
-		node_destroy(node->left);
+		destroy_node(node->left);
 	}
 
 	if (node->right != NULL)
 	{
-		node_destroy(node->right);
+		destroy_node(node->right);
 	}
 
 	destroy_window(node->window);
@@ -32,84 +32,48 @@ void destroy_node(struct node *node)
 	free(node);
 }
 
-bool insert_node(const struct config *config, struct node* root,
+bool insert_node(const struct server *server, struct node* root,
 		struct node* child)
 {
-	if (root == NULL || child == NULL)
+	const struct config *config = server->config;
+	const struct output *output = get_current_output(server);
+
+	if (config->mode == AUTOMATIC)
 	{
-		wlr_log(WLR_ERROR, "Root or child are NULL");
-	}
-
-	wlr_log(WLR_DEBUG, "Inserting %p", (void*)child);
-
-	struct node* candidate = root;
-
-	while (true)
-	{
-		wlr_log(WLR_DEBUG, "Candidate %p", (void*)candidate);
-		// Real root case
-		if (candidate->parent == NULL)
-		{
-			if ((candidate->left == NULL) && (candidate->right == NULL))
-			{
-				wlr_log(WLR_DEBUG, "Insert at root");
-				break;
-			}
-		}
-
-		if (mode == RIGHT)
-		{
-			if (candidate->right != NULL)
-			{
-				candidate = candidate->right;
-				continue;
-			}
-			else
-			{
-				break;
-			}
-		}
-		else if ((mode == LEFT) && (candidate->left != NULL))
-		{
-			if (candidate->left != NULL)
-			{
-				candidate = candidate->left;
-				continue;
-			}
-			else
-			{
-				break;
-			}
-		}
-
-		wlr_log(WLR_ERROR, "Error founding insertion candidate");
+		wlr_log(WLR_INFO, "Automatic insertion mode is not implemented");
 		return false;
-
 	}
 
-	struct node* new_child = node_create();
-	new_child->window = root->window;
-	new_child->parent = root;
-	child->parent = root;
-	root->window = NULL;
+	if (root == NULL)
+	{
+		wlr_log(WLR_DEBUG, "Inserting %p at root", (void*)child);
+		root = child;
 
-	if (mode == RIGHT)
-	{
-		wlr_log(WLR_DEBUG, "Inserting into right of %p", (void*)root);
-		root->left = new_child;
-		root->right = child;
+		resize_window(root->window, output->wlr_output->width,
+				output->wlr_output->height);
 	}
-	else if (mode == LEFT)
+	else
 	{
-		wlr_log(WLR_DEBUG, "Inserting into left of %p", (void*)root);
-		root->left = child;
-		root->right = new_child;
+		wlr_log(WLR_DEBUG, "Inserting %p into %p", (void*)child, (void*)root);
+		struct node* other_child = create_node();
+
+		// copy data
+		// remove data from root
+
+		if (config->polarity == LEFT)
+		{
+			root->left = child;
+			root->right = other_child;
+		}
+		else // config->polarity == RIGHT
+		{
+			root->right = child;
+			root->left = other_child;
+		}
+
+		other_child->parent = root;
+		child->parent = root;
 	}
 
 	return true;
-}
-
-bool is_leaf(struct node* node)
-{
-	return (node != NULL && node->parent != NULL && node->left == NULL && node->right == NULL);
 }
