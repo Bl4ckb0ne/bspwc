@@ -15,34 +15,19 @@ void output_destroy_notify(struct wl_listener* listener, void* data)
 
 void output_frame_notify(struct wl_listener* listener, void* data)
 {
-	struct output* output = wl_container_of(listener, output, frame);
-	struct backend* backend = output->server->backend;
-	struct wlr_output* wlr_output = data;
-	struct wlr_renderer* renderer = wlr_backend_get_renderer(wlr_output->backend);
+	struct output *output = wl_container_of(listener, output, frame);
+	struct backend *backend = output->server->backend;
+	struct wlr_output *wlr_output = data;
+	struct wlr_renderer *renderer = wlr_backend_get_renderer(wlr_output->backend);
 
-	struct timespec now;
-	clock_gettime(CLOCK_MONOTONIC, &now);
-
+	// Render loop
 	wlr_output_make_current(wlr_output, NULL);
 	wlr_renderer_begin(renderer, wlr_output->width, wlr_output->height);
 
 		float color[4] = {0.23f, 0.26f, 0.32f, 1.0f};
 		wlr_renderer_clear(renderer, color);
 
-		struct wl_resource* wl_resource_surface;
-		wl_resource_for_each(wl_resource_surface, &backend->wlr_compositor->surface_resources)
-		{
-			struct wlr_surface* surface = wlr_surface_from_resource(wl_resource_surface);
-			if (!wlr_surface_has_buffer(surface))
-			{
-				continue;
-			}
-
-			struct wlr_surface_state* state = &surface->current;
-			render_surface(wlr_output, surface, state->dx, state->dy);
-
-			wlr_surface_send_frame_done(surface, &now);
-		}
+		render_tree(output->desktop->root);
 
 		wlr_output_swap_buffers(wlr_output, NULL, NULL);
 	wlr_renderer_end(renderer);

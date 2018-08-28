@@ -5,8 +5,6 @@
 #define _POSIX_C_SOURCE 200112L
 #endif
 
-#include <time.h>
-
 #include <wayland-server.h>
 #include <wlr/render/wlr_renderer.h>
 #include <wlr/types/wlr_matrix.h>
