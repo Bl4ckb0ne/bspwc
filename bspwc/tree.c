@@ -60,23 +60,23 @@ bool insert_node(const struct server *server, struct node **root,
 		wlr_log(WLR_DEBUG, "Inserting %p into %p", (void*)child, (void*)root);
 
 		struct node* other_child = create_node();
+		other_child->window = (*root)->window;
+		(*root)->window = NULL;
 
-		// copy data
-		// remove data from root
-
+		// TODO: resize both windows
 		if (config->polarity == LEFT)
 		{
-			root->left = child;
-			root->right = other_child;
+			(*root)->left = child;
+			(*root)->right = other_child;
 		}
 		else // config->polarity == RIGHT
 		{
-			root->right = child;
-			root->left = other_child;
+			(*root)->left = other_child;
+			(*root)->right = child;
 		}
 
-		other_child->parent = root;
-		child->parent = root;
+		other_child->parent = (*root);
+		child->parent = (*root);
 	}
 
 	return true;
