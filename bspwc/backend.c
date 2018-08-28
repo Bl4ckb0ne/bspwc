@@ -49,38 +49,39 @@ void destroy_backend(struct backend* backend)
 	free(backend);
 }
 
-void render_surface(struct wlr_output* wlr_output, struct wlr_surface* surface, const int x, const int y)
+void render_surface(struct wlr_output *wlr_output,
+		struct wlr_surface *wlr_surface, const int x, const int y)
 {
-	if (!wlr_surface_has_buffer(surface))
+	if (!wlr_surface_has_buffer(wlr_surface))
 	{
 		return;
 	}
 
-	struct wlr_renderer* renderer = wlr_backend_get_renderer(wlr_output->backend);
+	struct wlr_renderer *wlr_renderer = wlr_backend_get_renderer(
+			wlr_output->backend);
 
 	struct wlr_box render_box = {
 			.x = x,
 			.y = y,
-			.width = surface->current.width,
-			.height = surface->current.height
+			.width = wlr_surface->current.width,
+			.height = wlr_surface->current.height
 		};
 
 	float matrix[16];
-	wlr_matrix_project_box(
-			matrix,
-			&render_box,
-			surface->current.transform,
-			0,
-			wlr_output->transform_matrix
-		);
+	wlr_matrix_project_box(matrix, &render_box, wlr_surface->current.transform,
+			0, wlr_output->transform_matrix);
 
-  struct wlr_texture *texture = wlr_surface_get_texture(surface);
-	wlr_render_texture_with_matrix(renderer, texture, matrix, 1.0f);
+	struct wlr_texture *wlr_texture = wlr_surface_get_texture(wlr_surface);
+	wlr_render_texture_with_matrix(wlr_renderer, wlr_texture, matrix, 1.0f);
 
-	struct wlr_subsurface* subsurface;
-	wl_list_for_each(subsurface, &surface->subsurfaces, parent_link)
+	struct wlr_subsurface *wlr_subsurface;
+	wl_list_for_each(wlr_subsurface, &wlr_surface->subsurfaces, parent_link)
 	{
-		struct wlr_surface_state* state = &subsurface->surface->current;
-		render_surface(wlr_output, subsurface->surface, x + state->dx, y + state->dy);
+		struct wlr_surface_state *wlr_subsurface_state =
+				&wlr_subsurface->surface->current;
+
+		int pos_x = x + wlr_subsurface_state->dx;
+		int pos_y = y + wlr_subsurface_state->dy;
+		render_surface(wlr_output, wlr_subsurface->surface, pos_x, pos_y);
 	}
 }

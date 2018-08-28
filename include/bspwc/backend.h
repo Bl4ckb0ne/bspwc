@@ -49,7 +49,7 @@ struct backend
 struct backend *create_backend(struct server *server);
 void destroy_backend(struct backend *backend);
 
-void render_surface(struct wlr_output *wlr_output, struct wlr_surface *surface,
-		const int x, const int y);
+void render_surface(struct wlr_output *wlr_output,
+		struct wlr_surface *wlr_surface, const int x, const int y);
 
 #endif // BACKEND_H
