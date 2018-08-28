@@ -11,7 +11,7 @@ project(
 	'buildtype=debug',
   ],
 )
- 
+
 add_project_arguments(
   '-Wno-unused-parameter',
   '-Wextra',
