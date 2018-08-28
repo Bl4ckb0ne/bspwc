@@ -58,8 +58,7 @@ bool insert_node(const struct server *server, struct node **root,
 	else
 	{
 		wlr_log(WLR_DEBUG, "Inserting %p into %p", (void*)child, (void*)root);
-		wlr_log(WLR_INFO, "TODO");
-		/*
+
 		struct node* other_child = create_node();
 
 		// copy data
@@ -78,12 +77,12 @@ bool insert_node(const struct server *server, struct node **root,
 
 		other_child->parent = root;
 		child->parent = root;
-		*/
 	}
 
 	return true;
 }
 
+static int time_log = 0;
 void render_tree(const struct node *root)
 {
 	if (root == NULL)
@@ -93,7 +92,14 @@ void render_tree(const struct node *root)
 
 	if (root->window != NULL)
 	{
-		wlr_log(WLR_INFO, "Rendering %p", root->window);
+		time_log++;
+
+		// TODO: Remove before merge
+		if (time_log == 60)
+		{
+			wlr_log(WLR_INFO, "Rendering %p", root->window);
+			time_log = 0;
+		}
 		render_window(root->window);
 	}
 
