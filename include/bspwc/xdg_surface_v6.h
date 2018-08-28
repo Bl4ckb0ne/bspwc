@@ -14,7 +14,6 @@ struct xdg_surface_v6
 	struct window *window;
 
 	struct wl_listener surface_commit;
-
 	struct wl_listener destroy;
 	struct wl_listener new_popup;
 	struct wl_listener map;
@@ -27,15 +26,19 @@ struct xdg_surface_v6
 	uint32_t pending_move_resize_configure_serial;
 };
 
-void handle_surface_commit(struct wl_listener *listener, void *data);
-void handle_destroy(struct wl_listener *listener, void *data);
-void handle_new_popup(struct wl_listener *listener, void *data);
-void handle_map(struct wl_listener *listener, void *data);
-void handle_unmap(struct wl_listener *listener, void *data);
-void handle_request_move(struct wl_listener *listener, void *data);
-void handle_request_resize(struct wl_listener *listener, void *data);
-void handle_request_maximize(struct wl_listener *listener, void *data);
-void handle_request_fullscreen(struct wl_listener *listener, void *data);
+void handle_xdg_surface_v6_commit(struct wl_listener *listener, void *data);
+void handle_xdg_surface_v6_destroy(struct wl_listener *listener, void *data);
+void handle_xdg_surface_v6_new_popup(struct wl_listener *listener, void *data);
+void handle_xdg_surface_v6_map(struct wl_listener *listener, void *data);
+void handle_xdg_surface_v6_unmap(struct wl_listener *listener, void *data);
+void handle_xdg_surface_v6_request_move(struct wl_listener *listener,
+		void *data);
+void handle_xdg_surface_v6_request_resize(struct wl_listener *listener,
+		void *data);
+void handle_xdg_surface_v6_request_maximize(struct wl_listener *listener,
+		void *data);
+void handle_xdg_surface_v6_request_fullscreen(struct wl_listener *listener,
+		void *data);
 
 void handle_xdg_shell_v6_surface(struct wl_listener *listener, void *data);
 
