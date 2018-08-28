@@ -170,7 +170,7 @@ bool terminate_server(struct server* server)
 	return true;
 }
 
-const struct output *get_current_output(const struct server *server)
+struct output *get_current_output(const struct server *server)
 {
 	wlr_log(WLR_DEBUG, "Getting the current output");
 

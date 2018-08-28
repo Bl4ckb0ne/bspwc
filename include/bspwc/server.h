@@ -43,6 +43,6 @@ bool config_server(struct server* server);
 bool start_server(struct server* server);
 bool terminate_server(struct server* server);
 
-const struct output *get_current_output(const struct server *server);
+struct output *get_current_output(const struct server *server);
 
 #endif // SERVER_H
