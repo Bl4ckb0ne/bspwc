@@ -3,7 +3,7 @@
 struct window* create_window()
 {
 	wlr_log(WLR_DEBUG, "Creating new window");
-	struct window *window = malloc(sizeof(struct window));
+	struct window *window = calloc(1, sizeof(struct window));
 	if (window == NULL)
 	{
 		return NULL;
@@ -20,6 +20,8 @@ struct window* create_window()
 
 	window->type = NONE;
 
+	window->wlr_surface = NULL;
+
 	wl_signal_init(&window->event_unmap);
 	wl_signal_init(&window->event_destroy);
 
@@ -35,7 +37,7 @@ void destroy_window(struct window *window)
 	free(window);
 }
 
-void position_window(struct window *window, int x, int y)
+void position_window(struct window *window, const int x, const int y)
 {
 	if (window == NULL)
 	{
@@ -49,7 +51,7 @@ void position_window(struct window *window, int x, int y)
 	window->y = y;
 }
 
-void resize_window(struct window *window, int width, int height)
+void resize_window(struct window *window, const int width, const int height)
 {
 	if (window == NULL)
 	{
@@ -62,4 +64,19 @@ void resize_window(struct window *window, int width, int height)
 
 	window->width = width;
 	window->height = height;
+}
+
+void render_window(const struct window *window)
+{
+	struct wlr_output *wlr_output = window->desktop->output->wlr_output;
+
+	struct timespec now;
+	clock_gettime(CLOCK_MONOTONIC, &now);
+
+	if (window->wlr_surface != NULL)
+	{
+		render_surface(wlr_output, window->wlr_surface, window->x, window->y);
+
+		wlr_surface_send_frame_done(window->wlr_surface, &now);
+	}
 }

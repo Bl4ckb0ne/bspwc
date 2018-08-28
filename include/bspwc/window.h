@@ -1,8 +1,15 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
+#ifndef _POSIX_C_SOURCE
+#define _POSIX_C_SOURCE 200112L
+#endif
+
+#include <time.h>
+
 #include <wlr/types/wlr_xdg_shell_v6.h>
 
+#include "bspwc/backend.h"
 #include "bspwc/desktop.h"
 #include "bspwc/xdg_surface_v6.h"
 
@@ -46,7 +53,8 @@ struct window
 struct window *create_window();
 void destroy_window(struct window *window);
 
-void position_window(struct window *window, int x, int y);
-void resize_window(struct window *window, int width, int height);
+void position_window(struct window *window, const int x, const int y);
+void resize_window(struct window *window, const int width, const int height);
+void render_window(const struct window *window);
 
 #endif // WINDOW_H
