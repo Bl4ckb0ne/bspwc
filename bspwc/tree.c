@@ -32,8 +32,8 @@ void destroy_node(struct node *node)
 	free(node);
 }
 
-bool insert_node(const struct server *server, struct node* root,
-		struct node* child)
+bool insert_node(const struct server *server, struct node **root,
+		struct node *child)
 {
 	const struct config *config = server->config;
 	const struct output *output = get_current_output(server);
@@ -44,17 +44,22 @@ bool insert_node(const struct server *server, struct node* root,
 		return false;
 	}
 
-	if (root == NULL)
+	if (*root == NULL)
 	{
 		wlr_log(WLR_DEBUG, "Inserting %p at root", (void*)child);
-		root = child;
 
-		resize_window(root->window, output->wlr_output->width,
+		*root = child;
+
+		// TODO: padding
+		position_window((*root)->window, 0, 0);
+		resize_window((*root)->window, output->wlr_output->width,
 				output->wlr_output->height);
 	}
 	else
 	{
 		wlr_log(WLR_DEBUG, "Inserting %p into %p", (void*)child, (void*)root);
+		wlr_log(WLR_INFO, "TODO");
+		/*
 		struct node* other_child = create_node();
 
 		// copy data
@@ -73,7 +78,32 @@ bool insert_node(const struct server *server, struct node* root,
 
 		other_child->parent = root;
 		child->parent = root;
+		*/
 	}
 
 	return true;
+}
+
+void render_tree(const struct node *root)
+{
+	if (root == NULL)
+	{
+		return;
+	}
+
+	if (root->window != NULL)
+	{
+		wlr_log(WLR_INFO, "Rendering %p", root->window);
+		render_window(root->window);
+	}
+
+	if (root->left != NULL)
+	{
+		render_tree(root->left);
+	}
+
+	if (root->right != NULL)
+	{
+		render_tree(root->right);
+	}
 }

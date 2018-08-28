@@ -7,6 +7,9 @@
 #include "bspwc/server.h"
 #include "bspwc/window.h"
 
+struct server;
+struct backend;
+
 struct node
 {
 	struct window *window;
@@ -19,7 +22,8 @@ struct node
 struct node *create_node();
 void destroy_node(struct node *node);
 
-bool insert_node(const struct server *server, struct node* root,
+bool insert_node(const struct server *server, struct node **root,
 		struct node* child);
+void render_tree(const struct node *root);
 
 #endif // TREE_H
