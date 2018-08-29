@@ -2,54 +2,91 @@
 
 void handle_xdg_surface_v6_commit(struct wl_listener *listener, void *data)
 {
-	wlr_log(WLR_INFO, "Handle xdg surface v6 commit");
+	wlr_log(WLR_DEBUG, "Handle xdg surface v6 commit");
+
+	struct xdg_surface_v6 *xdg_surface_v6 = wl_container_of(listener,
+			xdg_surface_v6, surface_commit);
+	assert(xdg_surface_v6 != NULL);
+
+	struct window *window = xdg_surface_v6->window;
+	struct wlr_xdg_surface_v6 *wlr_xdg_surface_v6 = window->wlr_xdg_surface_v6;
+
+	if (!wlr_xdg_surface_v6->mapped)
+	{
+		wlr_log(WLR_DEBUG, "%s is not mapped", window->title);
+		return;
+	}
+
+	// apply damage
+
+	struct wlr_box size = get_size_wlr_xdg_surface_v6(wlr_xdg_surface_v6);
+
+	// Give the size to the window
+	window->width = size.width;
+	window->height = size.height;
+
+	// pending move
 }
 
 void handle_xdg_surface_v6_destroy(struct wl_listener *listener, void *data)
 {
-	wlr_log(WLR_INFO, "Handle xdg surface v6 destroy");
+	wlr_log(WLR_DEBUG, "Handle xdg surface v6 destroy");
 }
 
 void handle_xdg_surface_v6_new_popup(struct wl_listener *listener, void *data)
 {
-	wlr_log(WLR_INFO, "Handle xdg surface v6 new poopup");
+	wlr_log(WLR_DEBUG, "Handle xdg surface v6 new poopup");
 }
 
 void handle_xdg_surface_v6_map(struct wl_listener *listener, void *data)
 {
-	wlr_log(WLR_INFO, "Handle xdg surface v6 map");
+	wlr_log(WLR_DEBUG, "Handle xdg surface v6 map");
+
+	struct xdg_surface_v6 *xdg_surface_v6 = wl_container_of(listener,
+			xdg_surface_v6, surface_commit);
+	assert(xdg_surface_v6 != NULL);
+
+	struct window *window = xdg_surface_v6->window;
+	struct wlr_xdg_surface_v6 *wlr_xdg_surface_v6 = window->wlr_xdg_surface_v6;
+
+	// Get wlr_xdg_surface_v6 size
+	struct wlr_box size = get_size_wlr_xdg_surface_v6(wlr_xdg_surface_v6);
+
+	// Give the size to the window
+	window->width = size.width;
+	window->height = size.height;
+
+	map_window(window, window->wlr_xdg_surface_v6->surface);
 }
 
 void handle_xdg_surface_v6_unmap(struct wl_listener *listener, void *data)
 {
-	wlr_log(WLR_INFO, "Handle xdg surface v6 unmap");
+	wlr_log(WLR_DEBUG, "Handle xdg surface v6 unmap");
 }
 
 void handle_xdg_surface_v6_request_move(struct wl_listener *listener,
 		void *data)
 {
-	wlr_log(WLR_INFO, "Handle xdg surface v6 request move");
+	wlr_log(WLR_DEBUG, "Handle xdg surface v6 request move");
 }
 
 void handle_xdg_surface_v6_request_resize(struct wl_listener *listener,
 		void *data)
 {
-	wlr_log(WLR_INFO, "Handle xdg surface v6 request resize");
+	wlr_log(WLR_DEBUG, "Handle xdg surface v6 request resize");
 }
 
 void handle_xdg_surface_v6_request_maximize(struct wl_listener *listener,
 		void *data)
 {
-	wlr_log(WLR_INFO, "Handle xdg surface v6 request maximize");
+	wlr_log(WLR_DEBUG, "Handle xdg surface v6 request maximize");
 }
 
 void handle_xdg_surface_v6_request_fullscreen(struct wl_listener *listener,
 		void *data)
 {
-	wlr_log(WLR_INFO, "Handle xdg surface v6 request fullscreen");
+	wlr_log(WLR_DEBUG, "Handle xdg surface v6 request fullscreen");
 }
-
-void handle_xdg_shell_v6_surface(struct wl_listener *listener, void *data);
 
 void handle_xdg_shell_v6_surface(struct wl_listener *listener, void *data)
 {
@@ -155,4 +192,13 @@ void handle_xdg_shell_v6_surface(struct wl_listener *listener, void *data)
 		wlr_log(WLR_ERROR, "Failed to insert window into desktop");
 		destroy_window(window);
 	}
+}
+
+struct wlr_box get_size_wlr_xdg_surface_v6(struct wlr_xdg_surface_v6
+		*wlr_xdg_surface_v6)
+{
+	struct wlr_box geometry;
+	wlr_xdg_surface_v6_get_geometry(wlr_xdg_surface_v6, &geometry);
+
+	return geometry;
 }

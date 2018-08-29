@@ -56,5 +56,6 @@ void destroy_window(struct window *window);
 void position_window(struct window *window, const int x, const int y);
 void resize_window(struct window *window, const int width, const int height);
 void render_window(const struct window *window);
+void map_window(struct window *window, struct wlr_surface *wlr_surface);
 
 #endif // WINDOW_H

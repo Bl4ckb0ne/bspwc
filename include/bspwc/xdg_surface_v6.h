@@ -42,4 +42,6 @@ void handle_xdg_surface_v6_request_fullscreen(struct wl_listener *listener,
 
 void handle_xdg_shell_v6_surface(struct wl_listener *listener, void *data);
 
+struct wlr_box get_size_wlr_xdg_surface_v6(struct wlr_xdg_surface_v6
+		*wlr_xdg_surface_v6);
 #endif // XDG_SHELL_V6_H

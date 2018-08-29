@@ -80,3 +80,17 @@ void render_window(const struct window *window)
 		wlr_surface_send_frame_done(window->wlr_surface, &now);
 	}
 }
+
+void map_window(struct window *window, struct wlr_surface *wlr_surface)
+{
+	assert(window->wlr_surface == NULL);
+
+	window->wlr_surface = wlr_surface;
+
+	struct wlr_subsurface *wlr_subsurface = NULL;
+	wl_list_for_each(wlr_subsurface, &window->wlr_surface->subsurfaces,
+			parent_link)
+	{
+		// handle subsurfaces
+	}
+}
