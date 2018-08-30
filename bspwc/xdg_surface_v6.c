@@ -43,7 +43,7 @@ void handle_xdg_surface_v6_map(struct wl_listener *listener, void *data)
 	wlr_log(WLR_DEBUG, "Handle xdg surface v6 map");
 
 	struct xdg_surface_v6 *xdg_surface_v6 = wl_container_of(listener,
-			xdg_surface_v6, surface_commit);
+			xdg_surface_v6, map);
 	assert(xdg_surface_v6 != NULL);
 
 	struct window *window = xdg_surface_v6->window;

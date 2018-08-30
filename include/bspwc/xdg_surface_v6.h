@@ -14,6 +14,7 @@ struct xdg_surface_v6
 	struct window *window;
 
 	struct wl_listener surface_commit;
+
 	struct wl_listener destroy;
 	struct wl_listener new_popup;
 	struct wl_listener map;
