@@ -45,4 +45,8 @@ void handle_xdg_shell_v6_surface(struct wl_listener *listener, void *data);
 
 struct wlr_box get_size_wlr_xdg_surface_v6(struct wlr_xdg_surface_v6
 		*wlr_xdg_surface_v6);
+
+void resize_xdg_shell_v6(struct window *window, uint32_t initial_width,
+		uint32_t initial_height);
+
 #endif // XDG_SHELL_V6_H

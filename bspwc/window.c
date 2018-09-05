@@ -64,6 +64,19 @@ void resize_window(struct window *window, const int width, const int height)
 
 	window->width = width;
 	window->height = height;
+
+	switch (window->type)
+	{
+	case XDG_SHELL_V6:
+		resize_xdg_shell_v6(window, width, height);
+		break;
+	case WL_SHELL:
+	case XDG_SHELL:
+	case XWAYLAND:
+	case NONE:
+	default:
+		wlr_log(WLR_ERROR, "Unknown surface type");
+	}
 }
 
 void render_window(const struct window *window)

@@ -202,3 +202,41 @@ struct wlr_box get_size_wlr_xdg_surface_v6(struct wlr_xdg_surface_v6
 
 	return geometry;
 }
+
+void resize_xdg_shell_v6(struct window *window, uint32_t initial_width,
+		uint32_t initial_height)
+{
+	assert(window->type == XDG_SHELL_V6);
+
+	struct wlr_xdg_surface_v6 *surface = window->wlr_xdg_surface_v6;
+	if (surface->role != WLR_XDG_SURFACE_V6_ROLE_TOPLEVEL)
+	{
+		return;
+	}
+
+	struct wlr_xdg_toplevel_v6_state *state = &surface->toplevel->current;
+
+	uint32_t width = initial_width;
+	uint32_t height = initial_height;
+
+	if (width < state->min_width)
+	{
+		width = state->min_width;
+	}
+	else if (state->max_width > 0 && width > state->max_width)
+	{
+		width = state->max_width;
+	}
+
+	if (height < state->min_height)
+	{
+		height = state->min_height;
+	}
+	else if (state->max_height > 0 && height > state->max_height)
+	{
+		height = state->max_height;
+	}
+
+	wlr_xdg_toplevel_v6_set_size(surface, width, height);
+
+}
