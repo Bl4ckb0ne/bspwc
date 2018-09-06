@@ -98,6 +98,9 @@ void handle_xdg_shell_v6_surface(struct wl_listener *listener, void *data)
 		return;
 	}
 
+	// Temp fix to solve geometry problems
+	wlr_xdg_toplevel_v6_set_maximized(wlr_xdg_surface_v6, true);
+
 	char *title = wlr_xdg_surface_v6->toplevel->title;
 
 	wlr_log(WLR_INFO, "New xdg_v6 toplevel: title=%s, app_id=%s", title,
