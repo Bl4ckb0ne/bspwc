@@ -15,18 +15,17 @@ enum insertion_polarity
 	RIGHT
 };
 
-enum insertion_direction
+enum insertion_split
 {
-	NORTH,
-	EAST,
-	SOUTH,
-	WEST
+	VERTICAL,
+	HORIZONTAL
 };
 
 struct config
 {
 	enum insertion_mode mode;
 	enum insertion_polarity polarity;
+	enum insertion_split split;
 };
 
 struct config *create_config();

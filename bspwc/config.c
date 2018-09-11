@@ -15,6 +15,7 @@ struct config *create_config()
 
 	config->mode = MANUAL;
 	config->polarity = LEFT;
+	config->split = VERTICAL;
 
 	return config;
 }

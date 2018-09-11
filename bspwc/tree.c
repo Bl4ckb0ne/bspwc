@@ -55,15 +55,19 @@ bool insert_node(const struct server *server, struct node **root,
 		resize_window((*root)->window, output->wlr_output->width,
 				output->wlr_output->height);
 	}
-	else
+	else // *root != NULL
 	{
 		wlr_log(WLR_DEBUG, "Inserting %p into %p", (void*)child, (void*)root);
+
+		double original_x = (*root)->window->x;
+		double original_y = (*root)->window->y;
+		uint32_t original_width = (*root)->window->width;
+		uint32_t original_height = (*root)->window->height;
 
 		struct node* other_child = create_node();
 		other_child->window = (*root)->window;
 		(*root)->window = NULL;
 
-		// TODO: resize both windows
 		if (config->polarity == LEFT)
 		{
 			(*root)->left = child;
@@ -77,6 +81,25 @@ bool insert_node(const struct server *server, struct node **root,
 
 		other_child->parent = (*root);
 		child->parent = (*root);
+
+		if (config->split == VERTICAL)
+		{
+			// Resize left
+			position_window((*root)->left->window, original_x, original_y);
+			resize_window((*root)->left->window, original_width / 2,
+					original_height);
+
+			// Resize right
+			position_window((*root)->right->window,
+					original_x + (original_y / 2), original_y);
+			resize_window((*root)->right->window, original_width / 2,
+					original_height);
+		}
+		else // config->split == HORIZONTAL
+		{
+			wlr_log(WLR_ERROR, "Horizontal split is not implemented");
+			return false;
+		}
 	}
 
 	return true;
@@ -95,9 +118,12 @@ void render_tree(const struct node *root)
 		time_log++;
 
 		// TODO: Remove before merge
-		if (time_log == 60)
+		if (time_log == 120)
 		{
-			wlr_log(WLR_INFO, "Rendering %p", root->window);
+			wlr_log(WLR_INFO, "Rendering %p %d,%d %lu,%lu", root->window,
+					root->window->x, root->window->y, (unsigned long)root->window->width,
+					(unsigned long)root->window->height);
+			
 			time_log = 0;
 		}
 		render_window(root->window);
