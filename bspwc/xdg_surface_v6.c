@@ -187,6 +187,8 @@ void handle_xdg_shell_v6_surface(struct wl_listener *listener, void *data)
 	window->xdg_surface_v6 = xdg_surface_v6;
 	xdg_surface_v6->window = window;
 
+	wlr_xdg_toplevel_v6_set_activated(window->wlr_xdg_surface_v6, true);
+
 	struct node *child = create_node();
 	child->window = window;
 

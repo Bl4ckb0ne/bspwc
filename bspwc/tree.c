@@ -59,10 +59,10 @@ bool insert_node(const struct server *server, struct node **root,
 	{
 		wlr_log(WLR_DEBUG, "Inserting %p into %p", (void*)child, (void*)root);
 
-		double original_x = (*root)->window->x;
-		double original_y = (*root)->window->y;
-		uint32_t original_width = (*root)->window->width;
-		uint32_t original_height = (*root)->window->height;
+		double x = (*root)->window->x;
+		double y = (*root)->window->y;
+		uint32_t width = (*root)->window->width;
+		uint32_t height = (*root)->window->height;
 
 		struct node* other_child = create_node();
 		other_child->window = (*root)->window;
@@ -82,18 +82,16 @@ bool insert_node(const struct server *server, struct node **root,
 		other_child->parent = (*root);
 		child->parent = (*root);
 
+
 		if (config->split == VERTICAL)
 		{
 			// Resize left
-			position_window((*root)->left->window, original_x, original_y);
-			resize_window((*root)->left->window, original_width / 2,
-					original_height);
+			position_window((*root)->left->window, x, y);
+			resize_window((*root)->left->window, (width / 2), height);
 
 			// Resize right
-			position_window((*root)->right->window,
-					original_x + (original_y / 2), original_y);
-			resize_window((*root)->right->window, original_width / 2,
-					original_height);
+			position_window((*root)->right->window, x + ((double)width / 2), y);
+			resize_window((*root)->right->window, (width / 2), height);
 		}
 		else // config->split == HORIZONTAL
 		{
@@ -120,7 +118,7 @@ void render_tree(const struct node *root)
 		// TODO: Remove before merge
 		if (time_log == 120)
 		{
-			wlr_log(WLR_INFO, "Rendering %p %d,%d %lu,%lu", root->window,
+			wlr_log(WLR_INFO, "Rendering %p %f,%f %lu,%lu", root->window,
 					root->window->x, root->window->y, (unsigned long)root->window->width,
 					(unsigned long)root->window->height);
 			
@@ -128,14 +126,16 @@ void render_tree(const struct node *root)
 		}
 		render_window(root->window);
 	}
-
-	if (root->left != NULL)
+	else // root->window == NULL
 	{
-		render_tree(root->left);
-	}
+		if (root->left != NULL)
+		{
+			render_tree(root->left);
+		}
 
-	if (root->right != NULL)
-	{
-		render_tree(root->right);
+		if (root->right != NULL)
+		{
+			render_tree(root->right);
+		}
 	}
 }

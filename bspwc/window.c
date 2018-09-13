@@ -37,7 +37,7 @@ void destroy_window(struct window *window)
 	free(window);
 }
 
-void position_window(struct window *window, const int x, const int y)
+void position_window(struct window *window, double x, double y)
 {
 	if (window == NULL)
 	{
@@ -45,13 +45,13 @@ void position_window(struct window *window, const int x, const int y)
 		return;
 	}
 
-	wlr_log(WLR_INFO, "Window %s new position to %d, %d", window->title, x, y);
+	wlr_log(WLR_INFO, "Window %s new position to %f, %f", window->title, x, y);
 
 	window->x = x;
 	window->y = y;
 }
 
-void resize_window(struct window *window, const int width, const int height)
+void resize_window(struct window *window, uint32_t width, uint32_t height)
 {
 	if (window == NULL)
 	{
