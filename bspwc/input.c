@@ -26,8 +26,8 @@ void handle_new_input(struct wl_listener *listener, void *data)
 	struct wlr_input_device *device = data;
 	enum wlr_input_device_type type = device->type;
 
-	wlr_log(WLR_DEBUG, "New input device: %s (%d:%d) %s", device->name,
-			device->vendor, device->product, device_type(type));
+	wlr_log(WLR_DEBUG, "New input device: %s (%s) %d:%d", device->name,
+			device_type(type), device->vendor, device->product);
 
 	if (type == WLR_INPUT_DEVICE_KEYBOARD)
 	{
@@ -42,7 +42,8 @@ void handle_new_input(struct wl_listener *listener, void *data)
 	}
 	else
 	{
-		wlr_log(WLR_INFO, "Device '%s' not implemented", device_type(type));
+		wlr_log(WLR_INFO, "Device %s (%s) not implemented", device->name,
+				device_type(type));
 	}
 }
 
@@ -64,7 +65,7 @@ struct input *create_input(struct server *server)
 	if (input->seat == NULL)
 	{
 		wlr_log(WLR_ERROR, "Failed to create wlr_seat");
-		free(input);
+		destroy_input(input);
 		return NULL;
 	}
 
@@ -89,4 +90,5 @@ void destroy_input(struct input *input)
 	}
 
 	free(input);
+	wlr_log(WLR_DEBUG, "Input destroyed");
 }
