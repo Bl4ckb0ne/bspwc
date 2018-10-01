@@ -71,6 +71,10 @@ struct cursor* create_cursor(struct input* input, struct wlr_input_device* devic
 	wl_signal_add(&cursor->wlr_cursor->events.axis, &cursor->axis);
 	cursor->axis.notify = handle_cursor_axis;
 
+	// Let wlr_seat know we have a pointer
+	uint32_t caps = WL_SEAT_CAPABILITY_POINTER;
+	wlr_seat_set_capabilities(input->seat, caps);
+
 	return cursor;
 }
 
