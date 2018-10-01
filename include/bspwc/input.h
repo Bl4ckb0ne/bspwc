@@ -21,11 +21,13 @@ struct input
 	// keyboard
 
 	struct wl_listener new_input;
+	struct wl_listener request_cursor;
 };
 
 const char *device_type(enum wlr_input_device_type type);
 
 void handle_new_input(struct wl_listener *listener, void *data);
+void handle_request_cursor(struct wl_listener *listener, void *data);
 
 struct input *create_input(struct server *server);
 void destroy_input(struct input *input);

@@ -47,6 +47,11 @@ void handle_new_input(struct wl_listener *listener, void *data)
 	}
 }
 
+void handle_request_cursor(struct wl_listener *listener, void *data)
+{
+	wlr_log(WLR_INFO, "TODO: handle_request_cursor");
+}
+
 struct input *create_input(struct server *server)
 {
 	wlr_log(WLR_DEBUG, "Creating input");
@@ -74,6 +79,10 @@ struct input *create_input(struct server *server)
 	input->new_input.notify = handle_new_input;
 	wl_signal_add(&server->backend->wlr_backend->events.new_input,
 			&input->new_input);
+
+	input->request_cursor.notify = handle_request_cursor;
+	wl_signal_add(&input->seat->events.request_set_cursor,
+			&input->request_cursor);
 
 	wlr_log(WLR_DEBUG, "Input %p created", (void*)input);
 	return input;
