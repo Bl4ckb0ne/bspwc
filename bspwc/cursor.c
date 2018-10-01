@@ -24,6 +24,7 @@ void handle_cursor_axis(struct wl_listener* listener, void* data)
 
 struct cursor* create_cursor(struct input* input, struct wlr_input_device* device)
 {
+	wlr_log(WLR_DEBUG, "Creating cursor");
 	struct cursor* cursor = calloc(1, sizeof(struct cursor));
 	if (cursor == NULL)
 	{
@@ -38,6 +39,7 @@ struct cursor* create_cursor(struct input* input, struct wlr_input_device* devic
 	{
 		wlr_log(WLR_ERROR, "Failed to create cursor's wlr_cursor");
 		free(cursor);
+		return NULL;
 	}
 	wlr_cursor_attach_input_device(cursor->wlr_cursor, device);
 
@@ -47,7 +49,7 @@ struct cursor* create_cursor(struct input* input, struct wlr_input_device* devic
 	cursor->wlr_xcursor_manager = wlr_xcursor_manager_create("default", 24);
 	if (cursor->wlr_xcursor_manager == NULL)
 	{
-		wlr_log(WLR_ERROR, "Failed to load left_ptr cursor");
+		wlr_log(WLR_ERROR, "Failed to create wlr_xcursor_manager");
 		free(cursor);
 		return NULL;
 	}
@@ -75,12 +77,17 @@ struct cursor* create_cursor(struct input* input, struct wlr_input_device* devic
 	uint32_t caps = WL_SEAT_CAPABILITY_POINTER;
 	wlr_seat_set_capabilities(input->seat, caps);
 
+	wlr_log(WLR_DEBUG, "Cursor %p created", (void*)cursor);
 	return cursor;
 }
 
 void destroy_cursor(struct cursor* cursor)
 {
+	wlr_log(WLR_DEBUG, "Destroying cursor %p", (void*)cursor);
+
 	wlr_xcursor_manager_destroy(cursor->wlr_xcursor_manager);
 	wlr_cursor_destroy(cursor->wlr_cursor);
+
 	free(cursor);
+	wlr_log(WLR_DEBUG, "Cursor destroyed");
 }
