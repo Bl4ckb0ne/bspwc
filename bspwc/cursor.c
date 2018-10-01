@@ -19,10 +19,29 @@ void handle_cursor_motion_absolute(struct wl_listener *listener, void *data)
 }
 
 void handle_cursor_button(struct wl_listener *listener, void *data)
-{}
+{
+	struct cursor *cursor = wl_container_of(listener, cursor, button);
+	struct wlr_event_pointer_button *event = data;
+
+	if (event->state == WLR_BUTTON_RELEASED)
+	{
+		wlr_log(WLR_DEBUG, "Cursor %p released", (void*)cursor);
+		cursor->cursor_mode = CURSOR_MODE_PASSTHROUGH;
+	}
+	else // event->state == WLR_BUTTON_PRESSED
+	{
+		wlr_log(WLR_DEBUG, "Cursor %p pressed", (void*)cursor);
+		wlr_log(WLR_INFO, "TODO: handle_cursor_button WLR_BUTTON_PRESSED");
+	}
+}
 
 void handle_cursor_axis(struct wl_listener *listener, void *data)
 {}
+
+void cursor_motion(struct cursor *cursor, uint32_t time)
+{
+
+}
 
 struct cursor *create_cursor(struct input *input,
 		struct wlr_input_device *device)
@@ -64,6 +83,8 @@ struct cursor *create_cursor(struct input *input,
 	struct wlr_box *layout_box = wlr_output_layout_get_box(output_layout, NULL);
 	wlr_cursor_warp(cursor->wlr_cursor, NULL, layout_box->width / 2 ,
 			layout_box->height / 2);
+
+	cursor->cursor_mode = CURSOR_MODE_PASSTHROUGH;
 
 	// Setup callbacks
 	wl_signal_add(&cursor->wlr_cursor->events.motion, &cursor->motion);
