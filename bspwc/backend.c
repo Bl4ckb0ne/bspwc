@@ -22,7 +22,7 @@ struct backend* create_backend(struct server* server)
 		);
 	backend->wlr_gamma_control_manager = wlr_gamma_control_manager_create(server->display);
 	backend->wlr_screenshooter = wlr_screenshooter_create(server->display);
-	backend->wlr_primary_selection_device_manager = wlr_primary_selection_device_manager_create(server->display);
+	backend->wlr_gtk_primary_selection_device_manager = wlr_gtk_primary_selection_device_manager_create(server->display);
 	backend->wlr_idle = wlr_idle_create(server->display);
 	backend->wlr_idle_inhibit = wlr_idle_inhibit_v1_create(server->display);
 	backend->wlr_linux_dmabuf = wlr_linux_dmabuf_v1_create(server->display, wlr_backend_get_renderer(backend->wlr_backend));
