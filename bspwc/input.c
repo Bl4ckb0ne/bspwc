@@ -14,6 +14,8 @@ const char *device_type(enum wlr_input_device_type type)
 		return "tablet tool";
 	case WLR_INPUT_DEVICE_TABLET_PAD:
 		return "tablet pad";
+	case WLR_INPUT_DEVICE_SWITCH:
+		return "switch";
 	}
 
 	return "UNKNOWN_DEVICE";
